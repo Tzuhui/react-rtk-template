@@ -1,8 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
 import Counter from './components/Counter';
+import { useGetPokemonByNameQuery } from './services/pokemon'
 
 function App() {
+  const { data, error, isLoading } = useGetPokemonByNameQuery('snorlax')
   return (
     <div className="App">
       <header className="App-header">
@@ -18,8 +20,18 @@ function App() {
         >
           Learn React
         </a>
+        {error ? (
+          <>Oh no, there was an error</>
+        ) : isLoading ? (
+          <>Loading...</>
+        ) : data ? (
+          <>
+            <h3>{data.species.name}</h3>
+            <img src={data.sprites.front_shiny} alt={data.species.name} />
+          </>
+        ) : null}
+        <Counter />
       </header>
-      <Counter />
     </div>
   );
 }
